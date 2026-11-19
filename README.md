@@ -1,45 +1,94 @@
-# Skillo – Playwright Automation with TypeScript & AI
+# Playwright + TypeScript UI Test Automation
 
-Course project for Playwright + TypeScript QA automation.
+[![Playwright Tests](https://github.com/martinab121/skillo-playwright/actions/workflows/playwright.yml/badge.svg)](https://github.com/martinab121/skillo-playwright/actions/workflows/playwright.yml)
 
-## Setup
+End-to-end UI test automation with **Playwright** and **TypeScript**, built during the
+Skillo course *Playwright Automation with TypeScript & AI*. The suite covers locators,
+user input, dialogs, frames, tables and file uploads, and uses the **Page Object Model**.
+It runs automatically on every push via GitHub Actions.
 
-    npm install
-    npx playwright install chromium
+## Tech stack
 
-## Run
+| Area            | Tools                                  |
+| --------------- | -------------------------------------- |
+| Language        | TypeScript (strict mode)               |
+| Test framework  | Playwright Test                        |
+| Browser         | Chromium                               |
+| Design pattern  | Page Object Model                      |
+| Reporting       | Playwright HTML report, traces         |
+| CI              | GitHub Actions                         |
 
-    npm test                                     # all tests, headless
-    npx playwright test lectures/03-pom/homework # Lecture 3 homework only
-    npm run test:headed                          # watch the browser
-    npm run test:ui                              # Playwright UI mode
-    npm run report                               # open the last HTML report
-    npm run codegen                              # record a test against ISkillo
+## Highlights
 
-## Structure
+### Page Object Model – Northwind Supply partner portal
 
-- `tests/` – first tests against the ISkillo training app (http://training.skillo-bg.com:4300)
-- `lectures/01-playwright/` – Lecture 1: first local pages and a login test
-- `lectures/02-playwright/` – Lecture 2: locators, inputs, dropdowns, dialogs, frames, tables, uploads
-- `lectures/03-pom/` – Lecture 3: Page Object Model
-  - `page-objects/`, `tests/` – lecture demo
-  - `homework/` – **Lecture 3 homework**: the Northwind Supply partner portal
-    - `pages/` – login, orders and account HTML pages
-    - `page-objects/` – `LoginPage`, `OrdersPage`, `AccountPage`
-    - `tests/homework.spec.ts` – 7 scenarios built on those page objects
+[`lectures/03-pom/homework`](lectures/03-pom/homework) tests a small order-management
+portal with three page objects:
 
-### Lecture 3 homework scenarios
+| Page object                                                              | Responsibility                                  |
+| ------------------------------------------------------------------------ | ----------------------------------------------- |
+| [`LoginPage`](lectures/03-pom/homework/page-objects/LoginPage.ts)       | Sign in, error messages                         |
+| [`OrdersPage`](lectures/03-pom/homework/page-objects/OrdersPage.ts)     | Orders grid: search, status filter, sort, read  |
+| [`AccountPage`](lectures/03-pom/homework/page-objects/AccountPage.ts)   | Profile form and account summary               |
+
+Scenarios in [`homework.spec.ts`](lectures/03-pom/homework/tests/homework.spec.ts):
 
 1. Signs in with valid credentials and opens the orders dashboard
 2. Shows an error message for an incorrect password
 3. Lists all 8 orders in the grid after sign in
 4. Filters the orders grid by customer name and status
 5. Sorts orders by total from highest to lowest
-6. Updates the phone number on the account page and shows it in the summary
+6. Updates the phone number and shows it in the account summary
 7. Signs out and redirects to sign in when the orders page is opened again
 
-## In the dev pod only
+Page methods return the next page object (e.g. `loginAndOpenOrders()` → `OrdersPage`),
+and assertions stay in the tests, so each test reads as a user flow.
 
-Headless Chromium needs extra libraries here:
+### Other areas covered
 
-    export LD_LIBRARY_PATH=$HOME/.local/chromium-deps/prefix/usr/lib/x86_64-linux-gnu:$HOME/.local/chromium-deps/prefix/lib/x86_64-linux-gnu
+| Folder                                                   | Topics                                                                 |
+| -------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [`tests/`](tests)                                        | Live tests against the ISkillo training app: home page, login form     |
+| [`lectures/01-playwright`](lectures/01-playwright)       | First tests on local pages                                             |
+| [`lectures/02-playwright`](lectures/02-playwright)       | CSS / XPath / role locators, checkboxes, dropdowns, dialogs, iframes, tables, dynamic content, file uploads |
+| [`lectures/03-pom`](lectures/03-pom)                     | Page Object Model                                                      |
+
+## Getting started
+
+Requirements: [Node.js](https://nodejs.org/) 18 or newer.
+
+```bash
+npm ci
+npx playwright install --with-deps chromium
+```
+
+## Running the tests
+
+```bash
+npm test                                      # whole suite, headless
+npx playwright test lectures/03-pom/homework  # POM homework only
+npm run test:headed                           # watch the browser
+npm run test:ui                               # Playwright UI mode
+npm run report                                # open the last HTML report
+```
+
+## Project structure
+
+```
+├── .github/workflows/      # CI: runs the suite on every push
+├── lectures/
+│   ├── 01-playwright/      # pages/ (HTML under test) + tests/
+│   ├── 02-playwright/
+│   └── 03-pom/
+│       └── homework/
+│           ├── pages/          # Northwind portal HTML
+│           ├── page-objects/   # LoginPage, OrdersPage, AccountPage
+│           └── tests/          # homework.spec.ts
+├── tests/                  # tests against the ISkillo training app
+├── playwright.config.ts
+└── tsconfig.json
+```
+
+## Related
+
+- [Selenium](https://github.com/martinab121/Selenium) – earlier UI automation with Selenium WebDriver, C# and NUnit

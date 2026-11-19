@@ -1,8 +1,7 @@
 {
   "name": "skillo-playwright",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "End-to-end UI test automation with Playwright and TypeScript (Page Object Model)",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
@@ -10,12 +9,23 @@
     "report": "playwright show-report",
     "codegen": "playwright codegen http://training.skillo-bg.com:4300"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "playwright",
+    "typescript",
+    "e2e",
+    "test-automation",
+    "qa",
+    "page-object-model"
+  ],
+  "author": "Martina Bolen",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.65.1",
     "@types/node": "^26.6.6",
     "typescript": "^7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martinab121/skillo-playwright.git"
   }
 }
