@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Your account | Form &amp; Field</title>
+	<link rel="stylesheet" href="../../02-playwright/pages/styles.css">
+</head>
+<body>
+	<header class="site-header">
+		<a class="brand" href="index.html">Form &amp; Field.</a>
+		<button id="logout-button" type="button">Sign out</button>
+	</header>
+	<main>
+		<p class="eyebrow">Your account</p>
+		<h1>Welcome back, Sam.</h1>
+		<p class="muted">Your details and recent orders, all in one place.</p>
+		<section class="panel" aria-labelledby="profile-heading">
+			<h2 id="profile-heading">Contact details</h2>
+			<dl>
+				<dt>Name</dt><dd>Sam Taylor</dd>
+				<dt>Email address</dt><dd id="account-email">sam@example.test</dd>
+			</dl>
+		</section>
+		<section class="panel" aria-labelledby="orders-heading">
+			<h2 id="orders-heading">Recent orders</h2>
+			<div class="table-wrap">
+				<table>
+					<caption>Order history</caption>
+					<thead><tr><th scope="col">Order</th><th scope="col">Placed on</th><th scope="col">Status</th><th scope="col">Total</th></tr></thead>
+					<tbody>
+						<tr><td>FF-1042</td><td><time datetime="2026-11-12">12 November 2026</time></td><td>Delivered</td><td>$49.00</td></tr>
+						<tr><td>FF-0986</td><td><time datetime="2026-10-28">28 October 2026</time></td><td>Delivered</td><td>$89.00</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</main>
+	<footer>Form &amp; Field / Thoughtful essentials for everyday living.</footer>
+	<script>
+		function requireSignIn() {
+			if (sessionStorage.getItem('ff-pom-authenticated') !== 'true') {
+				window.location.replace('login.html');
+			}
+		}
+
+		requireSignIn();
+		window.addEventListener('pageshow', requireSignIn);
+		document.querySelector('#logout-button').addEventListener('click', () => {
+			sessionStorage.removeItem('ff-pom-authenticated');
+			window.location.replace('login.html');
+		});
+	</script>
+</body>
+</html>

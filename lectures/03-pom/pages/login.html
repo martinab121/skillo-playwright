@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sign in | Form &amp; Field</title>
+	<link rel="stylesheet" href="../../02-playwright/pages/styles.css">
+	<style>
+		main { max-width: 480px; }
+	</style>
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">My account</a></header>
+	<main>
+		<p class="eyebrow">Your account</p>
+		<h1>Welcome back.</h1>
+		<p class="muted">Sign in to view your account and keep track of your orders.</p>
+		<form id="login-form" class="panel" novalidate>
+			<label for="email">Email address</label>
+			<input id="email" name="email" type="email" autocomplete="username" placeholder="you@example.com" required>
+			<label for="password">Password</label>
+			<input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+			<div class="actions"><button id="login-button" type="submit">Sign in</button></div>
+		</form>
+		<p id="login-error" class="status error" role="alert" hidden></p>
+		<aside class="panel" aria-labelledby="demo-account-heading">
+			<h2 id="demo-account-heading">Demo account</h2>
+			<p><strong>Email:</strong> <code>sam@example.test</code></p>
+			<p><strong>Password:</strong> <code>demo-password</code></p>
+		</aside>
+	</main>
+	<footer>Form &amp; Field / Thoughtful essentials for everyday living.</footer>
+	<script>
+		const form = document.querySelector('#login-form');
+		const email = document.querySelector('#email');
+		const password = document.querySelector('#password');
+		const error = document.querySelector('#login-error');
+
+		form.addEventListener('input', () => {
+			error.hidden = true;
+		});
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			error.hidden = true;
+
+			if (!email.value.trim() || !password.value) {
+				error.textContent = 'Enter your email address and password.';
+				error.hidden = false;
+				(!email.value.trim() ? email : password).focus();
+				return;
+			}
+
+			if (!email.validity.valid) {
+				error.textContent = 'Enter a valid email address.';
+				error.hidden = false;
+				email.focus();
+				return;
+			}
+
+			if (email.value.trim() === 'sam@example.test' && password.value === 'demo-password') {
+				sessionStorage.setItem('ff-pom-authenticated', 'true');
+				window.location.href = 'index.html';
+				return;
+			}
+
+			error.textContent = 'Email or password is incorrect.';
+			error.hidden = false;
+		});
+	</script>
+</body>
+</html>
